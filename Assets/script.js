@@ -1,39 +1,75 @@
 //Show date at the top of the screen
-var displayDate = new Date().toLocaleDateString(undefined, {weekday: "long", year: "numeric", month: "long", day: "numeric"})
+var displayDate = dayjs().format('dddd, MMMM.DD.YYYY');
 
-$(document).ready(function(){
+
+$(document).ready(function () {
   $("#currentDay").append(displayDate)
 })
 
-//function saveTask() {
+//Register click event and store value from input class "form-control" in local storage
+$(document).ready(function () {
+  $(".btn").on("click", function (event) {
+    event.preventDefault();
 
-//click to save to local storage
-$(".btn").on("click", function(event){
-  event.preventDefault();
-
-  //localStorage.setItem("userTask", value)
-
-  console.log(event)
-
-  $(document).ready(function(){
-    $(".btn").on("click", function () {
-       
-        var toDoEntry = $(this).closest("div.input-group").find("input[class='form-control']").val();
-       
-       localStorage.setItem("userEntry", JSON.stringify(toDoEntry))
-
-       console.log(toDoEntry)
-    });
+    var toDoEntry = $(this).closest("div.input-group").find("input[class~='form-control']").val();
+    //var savetext = JSON.parse(localStorage.getItem(""))
+    //$(toDoEntry[i]).val(savetext)
+  localStorage.setItem("userEntry", JSON.stringify(toDoEntry))
+  });
 });
 
-  //var toDoEntry = $(".form-control").val();
-  //define entry var above
-  //entry.push(toDoEntry)
-  //define saveTask function above
-  //saveTask(entry)
-  //retrieving usertask entry from local storage
-  //localStorage.getItem("userTask", JSON.stringify(entry));
-});
+ 
+  //persistStorage = JSON.parse(localStorage.getItem("userEntry")) || []
+
+  //var storedInput = $('.form-control')
+
+  //for (let i = 0; i < storedInput.length; i++) {
+    //const currentData = storedInput[i];
+    //var userText = "";
+
+    //for (let j = 0; j < toDoEntry.length; j++) {
+      //const currentEntry = $(currentData).attr('data-hour');
+      
+      //var savedItem = toDoEntry[j];
+
+      //if (currentEntry == savedItem.hour) {
+        //userText = savedItem.text
+      //}
+     
+    //}
+    //$(currentData).val(userText)
+  //}
+
+
+//edit due date in time block 
+var inputForms = $(".form-control");
+for (let i = 0; i < inputForms.length; i++) {
+  var currentHour = parseInt(dayjs().format('H'));
+  var inputHour = parseInt($(inputForms[i]).attr('data-hour'));
+
+  //console.log(currentHour)
+  //console.log(inputHour)
+
+  //compare these 2 variables
+  if (currentHour > inputHour) {
+
+    //add class past, present, future
+    $(inputForms[i]).addClass("past")
+  }
+  else if (currentHour === inputHour) {
+    $(inputForms[i]).addClass("present")
+    $(inputForms[i]).removeClass("past")
+  }
+  else {
+    $(inputForms[i]).addClass("future")
+    $(inputForms[i]).removeClass("past")
+    $(inputForms[i]).removeClass("present")
+  }
+}
+
+persistStorage()
+
+
 
 // listen for save button clicks
 //$("#save").on('click', function() {  // or whatever you called your button

@@ -11,35 +11,20 @@ $(document).ready(function () {
   $(".btn").on("click", function (event) {
     event.preventDefault();
 
-    var toDoEntry = $(this).closest("div.input-group").find("input[class~='form-control']").val();
-    //var savetext = JSON.parse(localStorage.getItem(""))
-    //$(toDoEntry[i]).val(savetext)
-  localStorage.setItem("userEntry", JSON.stringify(toDoEntry))
-  });
-});
+    var toDoEntry = $(this).closest("div.input-group").find("input[class~='form-control']").val()
 
- 
-  //persistStorage = JSON.parse(localStorage.getItem("userEntry")) || []
-
-  //var storedInput = $('.form-control')
-
-  //for (let i = 0; i < storedInput.length; i++) {
-    //const currentData = storedInput[i];
-    //var userText = "";
-
-    //for (let j = 0; j < toDoEntry.length; j++) {
-      //const currentEntry = $(currentData).attr('data-hour');
+    localStorage.setItem("userEntry", JSON.stringify(toDoEntry));
+    
+    //I was not able to get the user entry to reload on page refresh, code below was my attempt
+     var textPersist = JSON.parse(localStorage.getItem("userEntry"))
       
-      //var savedItem = toDoEntry[j];
-
-      //if (currentEntry == savedItem.hour) {
-        //userText = savedItem.text
-      //}
-     
-    //}
-    //$(currentData).val(userText)
-  //}
-
+      if(textPersist != null){
+        textPersist = $("userEntry").val();
+      }
+      else $(textPersist).val() = 0;
+      console.log(textPersist)
+    })
+});
 
 //edit due date in time block 
 var inputForms = $(".form-control");
@@ -47,10 +32,7 @@ for (let i = 0; i < inputForms.length; i++) {
   var currentHour = parseInt(dayjs().format('H'));
   var inputHour = parseInt($(inputForms[i]).attr('data-hour'));
 
-  //console.log(currentHour)
-  //console.log(inputHour)
-
-  //compare these 2 variables
+  //compare the 2 variables
   if (currentHour > inputHour) {
 
     //add class past, present, future
@@ -66,18 +48,3 @@ for (let i = 0; i < inputForms.length; i++) {
     $(inputForms[i]).removeClass("present")
   }
 }
-
-persistStorage()
-
-
-
-// listen for save button clicks
-//$("#save").on('click', function() {  // or whatever you called your button
-  // get nearby values -look into siblings and parents relationship in jQuery
-  // save in localStorage
-  // Show notification that item was saved to localStorage by adding class .show
-  // Timeout to remove .show class after 5 seconds
-//});
-
-//}
-//saveTask()
